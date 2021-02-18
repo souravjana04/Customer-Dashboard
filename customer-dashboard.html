@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div id='root'>
+            
+        </div>
+        <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script> 
+        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+        <script crossorigin src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+        <script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+        <script src = "https://cdnjs.cloudflare.com/ajax/libs/react-chartjs-2/2.11.1/react-chartjs-2.min.js"></script>
+        <script src='customer-data.js'></script>
+        <script type='text/babel'> // For transpiling
+            const rootHandle = document.getElementById('root')
+            const { useState, useEffect } = React
+            const { Pie } = ReactChartjs2
+
+            function DisplayBasicInfo(props) {
+                const { customerOrders, refinedData } = props
+
+                // to calculate total amount from all the orders
+                let totalAmount = 0
+                customerOrders.forEach(order => totalAmount += order.Amount)
+
+                return(
+                    <div>
+                        <div className='basic-info'>
+                            <h1>{customerOrders.length}</h1>
+                            <h1>Orders</h1>    
+                        </div>  
+                        <div className='basic-info'>
+                            <h1>{totalAmount}</h1>
+                            <h1>Amount</h1>    
+                        </div>   
+                        <div className='basic-info'>
+                            <h1>{refinedData.length}</h1>
+                            <h1>Customers</h1>    
+                        </div>   
+                    </div>
+                )
+            }
+
+            function CustomerTable(props) {
+                const { data, selectCustomer } = props
+                return (
+                    <div className='cust-table-container'>
+                        {
+                            (data.length > 0) ? (
+                                <table className='table-content'>
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Name</th>
+                                            <th>Mobile</th>
+                                            <th>Details</th>    
+                                        </tr>    
+                                    </thead>    
+                                    <tbody>
+                                        {
+                                            data.map((ele,i) => {
+                                                return (
+                                                    <tr key={i+1}>
+                                                        <td>{i+1}</td>
+                                                        <td>{ele.Name}</td>
+                                                        <td>{ele.Phone}</td>
+                                                        <td><button onClick={() => {
+                                                            selectCustomer(ele)
+                                                        }}>show</button></td>
+                                                    </tr>
+                                                )
+                                            })
+                                        }
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <p><b>Record Not Found. Enter customer full name or valid Phone number!!</b></p>
+                            )
+                        }
+                    </div>
+                )
+            }
+
+            function DisplayCustomerInfo(props) {
+                const { customerOrders, refinedData, modalToggle, selectCustomer } = props
+                const [ searchCustomer, setSearchCustomer ] = useState('')
+                const [ customerData, setCustomerData ] = useState({})
+                
+                const handleSearchCustomer = (e) => {
+                    setSearchCustomer(e.target.value)
+                    const searchByName = refinedData.filter(ele => ele.Name.toLowerCase() === e.target.value.toLowerCase())
+                    const searchByPhone = refinedData.filter(ele => ele.Phone === Number(e.target.value))
+                    if(searchByName.length > 0) {
+                        setCustomerData(searchByName)
+                    } else if(searchByPhone.length > 0) {
+                        setCustomerData(searchByPhone)
+                    } else (
+                        setCustomerData([])
+                    )
+                }
+
+                return (
+                    <div className='customer-info-container'>
+                        <h2 className='search-customer component-title'>Listing Customers</h2>
+                        <input type='text'
+                            className='search-custome search-box' 
+                            value={searchCustomer}
+                            onChange={handleSearchCustomer} 
+                            placeholder='   search' 
+                            />
+                        {
+                            (searchCustomer.length > 0) ? (
+                                <CustomerTable data={customerData} selectCustomer={selectCustomer}/>
+                            ) : (
+                                <CustomerTable data={refinedData} selectCustomer={selectCustomer}/>
+                            )
+                        }
+                    </div>
+                )
+            }
+
+            function OrderDistribution(props) {
+                const { refinedData } = props
+
+                const countOfOrders ={one : 0, two : 0, three : 0, four : 0, moreThanFive : 0}
+                refinedData.forEach(ele => {
+                    const numOfOrders = ele.orders.length
+                    if(numOfOrders >= 5) {
+                        countOfOrders.moreThanFive += 1
+                    } else if(numOfOrders === 4) {
+                        countOfOrders.four += 1
+                    } else if(numOfOrders === 3) {
+                        countOfOrders.three += 1
+                    } else if(numOfOrders === 2) {
+                        countOfOrders.two += 1
+                    } else if(numOfOrders === 1) {
+                        countOfOrders.one += 1
+                    }
+                })
+
+                // configure chart
+                const chart = {
+                    labels: Object.keys(countOfOrders),
+                    datasets: [
+                        {
+                            data: Object.values(countOfOrders),
+                            backgroundColor: ['blue','green','red','yellow','pink']
+                        }
+                    ]
+                }
+
+                return (
+                    <div className='order-dist-container'>
+                        <h2 className='component-title'>Order Distribution</h2>
+                        <div className='order-dist-content'>
+                            <table className='table-content order-dist-table-content '>
+                                <thead>
+                                    <tr>
+                                        <th>No. of Orders</th>   
+                                        <th>Count of customers</th> 
+                                    </tr>    
+                                </thead>   
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>{countOfOrders.one}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>{countOfOrders.two}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>{countOfOrders.three}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>{countOfOrders.four}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5+</td>
+                                        <td>{countOfOrders.moreThanFive}</td>
+                                    </tr>
+                                </tbody>
+                            </table>  
+                            <div className='pie-chart order-dist-content'>
+                                <Pie data={chart} />
+                            </div> 
+                        </div>
+                    </div>
+                )
+            }
+
+            function ModalComponent(props) {
+                const { modalToggle } = props
+                const { Name, Phone, orders } = props.customer
+
+                // to calculate total amount spent by selected customer
+                let totalAmount = 0
+                orders.forEach(ele => {
+                    totalAmount += ele.Amount
+                })
+
+                return (
+                    <div className = 'modal'>
+                        <div className = 'modal-content'>
+                            <div className = 'modal-header'>
+                                <h1 className = 'modal-title'>{Name} - {Phone}</h1>
+                            </div>
+                            <div className = 'modal-body'>
+                                <h2>Order count - {orders.length}, Total Amount - {totalAmount}</h2>
+                                <table className = 'table-content'>
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Date</th>
+                                            <th>Amount</th>
+                                        </tr>    
+                                    </thead>  
+                                    <tbody>
+                                        {
+                                            orders.map(ele => {
+                                                return (
+                                                    <tr key={ele.id}>
+                                                        <td>{ele.id}</td>
+                                                        <td>{ele.Date}</td>
+                                                        <td>{ele.Amount}</td>    
+                                                    </tr>
+                                                )
+                                            })
+                                        }
+                                    </tbody>  
+                                </table>
+                            </div>
+                            <div className='modal-footer'>
+                                <button onClick={modalToggle}>close</button>    
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+
+            function CustomerDashboard(props) {
+                const [customerOrders, setCustomerOrders] = useState([])
+                const [selectedCustomer, setSelectedCustomer] = useState({})
+                // update data
+                useEffect(() => {
+                    setCustomerOrders(custData)
+                }, [])
+
+                // State for Modal 
+                const [isModalOpen, setIsModalOpen] = useState(false)
+                const modalToggle = () => {
+                    setIsModalOpen(!isModalOpen)
+                }
+
+                // to add the customer details
+                const refinedData = []
+                customerOrders.forEach(customer => {
+                    const dataExistence = refinedData.filter(ele => ele.Phone === customer.Phone)
+                    if(dataExistence.length < 1) {
+                        refinedData.push(customer)
+                    }
+                })
+
+                // to add the orders made by each customer
+                refinedData.map(customer => {
+                    const orders = []
+                    const eachCustomerOrders = customerOrders.filter(ele => ele.Phone === customer.Phone)
+                    eachCustomerOrders.forEach((ele,i) => orders.push({id : i+1, Date : ele.Date, Amount : ele.Amount}))
+                    customer.orders = orders
+                })
+                console.log(refinedData)
+
+                // to handle search and show button of each customer detail
+                const selectCustomer = (customer) => {
+                    setSelectedCustomer(customer)
+                    modalToggle()
+                }
+
+                return (
+                    <div>
+                        <h1 id='title'>Customer Dashboard</h1>
+                        <DisplayBasicInfo refinedData={refinedData} customerOrders={customerOrders} />
+                        { 
+                            (customerOrders.length > 0) && (
+                                <DisplayCustomerInfo customerOrders={customerOrders} 
+                                    refinedData={refinedData} 
+                                    modalToggle={modalToggle}
+                                    selectCustomer={selectCustomer}/>
+                            ) 
+                        }
+                        {
+                            <OrderDistribution refinedData={refinedData}/>
+                        }
+                        {(isModalOpen && Object.keys(selectedCustomer).length > 0) && (
+                            <ModalComponent 
+                                modalToggle={modalToggle}
+                                customer={selectedCustomer}
+                            />
+                        )}
+                    </div>
+                )
+            }
+
+            ReactDOM.render(<CustomerDashboard />, rootHandle)
+        </script>
+    </body>
+</html>

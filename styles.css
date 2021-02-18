@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css?family=ABeeZee');
+body{
+    font-family: 'ABeeZee';
+    padding: 0;
+    margin: 0;
+}
+#title{
+    text-align: center;
+    background-color: #009879;
+    color:white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size:50px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.basic-info {
+    display: inline-block;
+    margin: 20px 100px 20px 110px;
+    padding-left: 10px;
+    width: 220px;
+    background-color: aliceblue;
+    border-style:solid;
+}
+
+/* CSS part for every table */
+.table-content {
+    width: 100%;
+    border-collapse: collapse; /* to reduce the gap between each cell */
+    margin:25px 0; /* to add space between the top and bottom of each cell */
+    text-align: left;
+    font-size: 1.0em;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+.order-dist-table-content{
+    width: 70%;
+    border-collapse: collapse; /* to reduce the gap between each cell */
+    margin:25px 0; /* to add space between the top and bottom of each cell */
+    text-align: left;
+    font-size: 1.0em;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+.table-content thead tr{
+    background-color: #009879;
+    color: #ffffff;
+    font-weight: bold;
+}
+.table-content th,
+.table-content td {
+    padding: 7px 7px;
+}
+.table-content tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+.table-content tbody tr:nth-of-type(even) { /* to add styling only for the even'th row */
+    background-color: #f3f3f3;
+}
+.table-content tbody tr:last-of-type{
+    border-bottom: 2px solid #009879;
+}
+
+
+.search-customer{
+    display: inline-block;
+    margin-bottom: 0;
+}
+.component-title{
+    margin-bottom: 0;
+}
+.search-box{
+    float: right;
+    margin-top: 25px;
+    padding-bottom: 3px;
+    border-radius: 15px;
+    width: 200px;
+    height: 20px;
+}
+
+/* Modal CSS part */
+.modal {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal-content{
+    width: 40%;
+    background-color: white;
+    border: #009879;
+    border-style: solid;
+}
+.modal-header, .modal-footer {
+    padding:10px;
+}
+.modal-header{
+    background-color: #009879;
+    color: white;
+}
+.modal-footer{
+    float: right;
+}
+
+.modal-title {
+    margin: 0;
+}
+
+.modal-body{
+    padding: 10px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    overflow-y: scroll;
+    height: 250px;
+}
+
+/* Pie chart */
+.pie-chart{
+    height: 300px;
+    width: 40%;
+    float: right;
+}
+
+.customer-info-container,
+.order-dist-container{
+    padding: 0 20px 0 20px;
+}
+.order-dist-content{
+    display: flex;
+}
+.cust-table-container p {
+    text-align: center;
+}
