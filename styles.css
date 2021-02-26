@@ -14,9 +14,33 @@ body{
     margin-top: 0px;
     margin-bottom: 0px;
 }
+
+/* CSS for every container heading */
+.container{
+    padding: 0 2% 0 2%;
+}
+
+/* CSS part for search box */
+.search-listing-title{
+    display: inline;
+}
+.search-box{
+    float: right;
+    padding-bottom: 1px;
+    border-radius: 15px;
+    width: 200px;
+    height: 20px;
+}
+
+/* CSS part component-container title */
+.component-title{
+    margin-bottom: 0;
+}
+
+/* CSS for stats item component */
 .basic-info {
     display: inline-block;
-    margin: 20px 100px 20px 110px;
+    margin: 20px 100px 20px 105px;
     padding-left: 10px;
     width: 220px;
     background-color: aliceblue;
@@ -27,17 +51,7 @@ body{
 .table-content {
     width: 100%;
     border-collapse: collapse; /* to reduce the gap between each cell */
-    margin:25px 0; /* to add space between the top and bottom of each cell */
-    text-align: left;
-    font-size: 1.0em;
-    border-radius: 5px 5px 0 0;
-    overflow: hidden;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-}
-.order-dist-table-content{
-    width: 70%;
-    border-collapse: collapse; /* to reduce the gap between each cell */
-    margin:25px 0; /* to add space between the top and bottom of each cell */
+    margin:25px 0;
     text-align: left;
     font-size: 1.0em;
     border-radius: 5px 5px 0 0;
@@ -63,26 +77,21 @@ body{
     border-bottom: 2px solid #009879;
 }
 
-
-.search-customer{
+/* CSS part for order distribution container and piechart*/
+.order-dist-content{
+    width: 65%;
+}
+#piechart{
+    width:34%;
+    padding-left: 1%;
+}
+.order-dist-container-content{
     display: inline-block;
-    margin-bottom: 0;
-}
-.component-title{
-    margin-bottom: 0;
-}
-.search-box{
-    float: right;
-    margin-top: 25px;
-    padding-bottom: 3px;
-    border-radius: 15px;
-    width: 200px;
-    height: 20px;
 }
 
-/* Modal CSS part */
+/* CSS part for Modal */
 .modal {
-    position: fixed;
+    position:fixed;
     left: 0;
     right: 0;
     top: 0;
@@ -108,33 +117,13 @@ body{
 .modal-footer{
     float: right;
 }
-
 .modal-title {
     margin: 0;
 }
-
 .modal-body{
     padding: 10px;
+    height: 250px;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
     overflow-y: scroll;
-    height: 250px;
-}
-
-/* Pie chart */
-.pie-chart{
-    height: 300px;
-    width: 40%;
-    float: right;
-}
-
-.customer-info-container,
-.order-dist-container{
-    padding: 0 20px 0 20px;
-}
-.order-dist-content{
-    display: flex;
-}
-.cust-table-container p {
-    text-align: center;
 }
